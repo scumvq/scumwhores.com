@@ -7,278 +7,147 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: #1a0000;
-            background-image:
-                linear-gradient(rgba(0,0,0,0.3) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.3) 1px, transparent 1px);
-            background-size: 4px 4px;
-            color: #ff0000;
-            font-family: 'Times New Roman', Times, serif;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
             min-height: 100vh;
         }
         .top-bar {
-            padding: 15px 20px;
-            background: rgba(0,0,0,0.8);
-            border-bottom: 1px solid #ff0000;
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
         .top-bar a {
-            color: #ff0000;
+            color: #fff;
             text-decoration: none;
             font-size: 12px;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
-        .top-bar h1 {
-            font-size: 14px;
-            letter-spacing: 4px;
-            font-weight: normal;
-        }
-        .cart-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: transparent;
-            border: 1px solid #ff0000;
+        .top-bar a:hover {
             color: #ff0000;
-            padding: 8px 15px;
-            font-family: inherit;
-            font-size: 11px;
-            letter-spacing: 2px;
-            cursor: pointer;
-            text-decoration: none;
         }
-        .cart-btn:hover {
-            background: #ff0000;
-            color: #000;
-        }
-        .cart-count {
-            background: #ff0000;
-            color: #000;
-            padding: 2px 6px;
-            font-size: 10px;
-            font-weight: bold;
+        .cart-link {
+            color: #ff0000;
+            font-style: italic;
+            font-family: 'Times New Roman', serif;
         }
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0;
-            padding: 0;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            padding: 20px 30px 60px;
         }
-        @media (max-width: 600px) {
+        @media (max-width: 1000px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 700px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 450px) {
             .product-grid {
                 grid-template-columns: 1fr;
             }
         }
         .product-card {
-            position: relative;
-            background: linear-gradient(135deg, #2a0000 0%, #1a0000 50%, #0a0000 100%);
-            border: 1px solid #330000;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 400px;
+            cursor: pointer;
         }
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23330000" opacity="0.1" x="0" y="0" width="2" height="2"/></svg>');
-            background-size: 3px 3px;
-            pointer-events: none;
+        .product-card:hover .product-image {
+            opacity: 0.8;
         }
-        .product-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,0,0,0.8);
-            border-radius: 5px;
+        .product-image-container {
+            width: 100%;
+            aspect-ratio: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-        }
-        .product-badge svg {
-            width: 20px;
-            height: 20px;
-            fill: #000;
+            margin-bottom: 15px;
+            background: #000;
         }
         .product-image {
-            width: 100%;
-            max-width: 250px;
-            height: 250px;
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        .product-image-placeholder {
-            width: 100%;
-            max-width: 250px;
-            height: 250px;
-            background: #0a0000;
-            border: 1px dashed #330000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            font-size: 10px;
-            letter-spacing: 2px;
-            opacity: 0.5;
+            transition: opacity 0.2s;
         }
         .product-name {
-            font-size: 16px;
-            letter-spacing: 3px;
-            text-align: center;
-            margin-bottom: 10px;
+            font-size: 11px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 5px;
+            color: #fff;
         }
         .product-price {
-            font-size: 24px;
-            letter-spacing: 2px;
-            font-style: italic;
-            position: relative;
-            z-index: 1;
+            font-size: 12px;
+            color: #888;
         }
-        .add-to-cart {
-            margin-top: 15px;
-            background: transparent;
-            border: 1px solid #ff0000;
+        .sold-out {
             color: #ff0000;
-            padding: 10px 25px;
-            font-family: inherit;
-            font-size: 11px;
-            letter-spacing: 2px;
-            cursor: pointer;
-            position: relative;
-            z-index: 1;
-            transition: all 0.2s;
-        }
-        .add-to-cart:hover {
-            background: #ff0000;
-            color: #000;
-        }
-        .added {
-            background: #ff0000;
-            color: #000;
         }
     </style>
 </head>
 <body>
     <div class="top-bar">
         <a href="/">RETURN</a>
-        <h1>SCUM MARKET</h1>
-        <a href="/market/cart" class="cart-btn">
-            CART <span class="cart-count" id="cartCount">0</span>
-        </a>
+        <a href="/market/cart" class="cart-link">cart</a>
     </div>
 
     <div class="product-grid" id="productGrid">
-        <!-- Products will be injected here -->
+        <!-- Products injected by JS -->
     </div>
 
     <script>
-        // Product data - update with real products
         const products = [
             {
                 id: 1,
-                name: "SEDUCE DEGRADE MUTILATE",
-                price: 600,
-                image: "/market/images/polo.png"
+                name: "SCUMHARDT PINT",
+                price: 250,
+                image: "/market/images/pint.jpg",
+                soldOut: false
             },
             {
                 id: 2,
-                name: "DOUBLE CUP",
-                price: 50,
-                image: "/market/images/cup.png"
+                name: "FENTANYLDEALER HOODIE",
+                price: 350,
+                image: "/market/images/hoodie.jpg",
+                soldOut: false
             },
             {
                 id: 3,
-                name: "PRODUCT 3",
-                price: 100,
-                image: null
+                name: "HOUSE OF SCUMWHORE JACKET",
+                price: 666.66,
+                image: "/market/images/jacket.png",
+                soldOut: false
             },
             {
                 id: 4,
-                name: "PRODUCT 4",
-                price: 200,
-                image: null
+                name: "PYTHON BACKPACK",
+                price: 800,
+                image: "/market/images/backpack.jpg",
+                soldOut: false
             }
         ];
 
-        // Cart functions
-        function getCart() {
-            return JSON.parse(localStorage.getItem('scumCart') || '[]');
-        }
-
-        function saveCart(cart) {
-            localStorage.setItem('scumCart', JSON.stringify(cart));
-            updateCartCount();
-        }
-
-        function addToCart(productId) {
-            const cart = getCart();
-            const product = products.find(p => p.id === productId);
-            const existing = cart.find(item => item.id === productId);
-
-            if (existing) {
-                existing.qty += 1;
-            } else {
-                cart.push({ ...product, qty: 1 });
-            }
-
-            saveCart(cart);
-
-            // Visual feedback
-            const btn = document.querySelector(`[data-product-id="${productId}"]`);
-            btn.textContent = 'ADDED';
-            btn.classList.add('added');
-            setTimeout(() => {
-                btn.textContent = 'ADD TO CART';
-                btn.classList.remove('added');
-            }, 1000);
-        }
-
-        function updateCartCount() {
-            const cart = getCart();
-            const count = cart.reduce((sum, item) => sum + item.qty, 0);
-            document.getElementById('cartCount').textContent = count;
-        }
-
-        // Render products
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = products.map(product => `
-                <div class="product-card">
-                    <div class="product-badge">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <div class="product-card" onclick="window.location='/market/product/?id=${product.id}'">
+                    <div class="product-image-container">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
                     </div>
-                    ${product.image
-                        ? `<img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.outerHTML='<div class=\\'product-image-placeholder\\'>NO IMAGE</div>'">`
-                        : '<div class="product-image-placeholder">NO IMAGE</div>'
-                    }
                     <div class="product-name">${product.name}</div>
-                    <div class="product-price">$${product.price}</div>
-                    <button class="add-to-cart" data-product-id="${product.id}" onclick="addToCart(${product.id})">ADD TO CART</button>
+                    <div class="product-price ${product.soldOut ? 'sold-out' : ''}">
+                        ${product.soldOut ? 'SOLD OUT' : '$' + product.price.toFixed(2)}
+                    </div>
                 </div>
             `).join('');
         }
 
-        // Initialize
         renderProducts();
-        updateCartCount();
     </script>
 </body>
 </html>

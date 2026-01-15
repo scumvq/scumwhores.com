@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAT - SCUMWHORES.COM</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #000;
+            color: #ff0000;
+            font-family: 'Times New Roman', Times, serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #ff0000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #000;
+        }
+        .header a {
+            color: #ff0000;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+        .header-center {
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 14px;
+            letter-spacing: 3px;
+        }
+        .header-status {
+            font-size: 9px;
+            letter-spacing: 1px;
+            opacity: 0.5;
+            margin-top: 3px;
+        }
+        .chat-area {
+            flex: 1;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .message-bubble {
+            background: #1a0000;
+            padding: 15px 20px;
+            border-radius: 15px;
+            max-width: 280px;
+            margin-bottom: 20px;
+        }
+        .message-bubble p {
+            font-size: 13px;
+            letter-spacing: 1px;
+            line-height: 1.6;
+        }
+        .message-time {
+            font-size: 9px;
+            opacity: 0.4;
+            margin-top: 8px;
+            text-align: right;
+        }
+        .system-message {
+            font-size: 11px;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            text-align: center;
+        }
+        .input-area {
+            padding: 15px 20px;
+            border-top: 1px solid #1a0000;
+            display: flex;
+            gap: 10px;
+        }
+        .input-field {
+            flex: 1;
+            background: #0a0000;
+            border: 1px solid #330000;
+            padding: 12px 15px;
+            color: #ff0000;
+            font-family: inherit;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+        .input-field::placeholder {
+            color: #660000;
+        }
+        .input-field:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .send-btn {
+            background: #ff0000;
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            font-family: inherit;
+            font-size: 11px;
+            letter-spacing: 2px;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/chambers/private">BACK</a>
+        <div class="header-center">
+            <h1 id="contact-name">SCUMWHORE</h1>
+            <div class="header-status">ENCRYPTED</div>
+        </div>
+        <span></span>
+    </div>
+    <div class="chat-area">
+        <div class="message-bubble">
+            <p>MESSAGING SYSTEM CURRENTLY OFFLINE. AWAIT FURTHER INSTRUCTIONS.</p>
+            <div class="message-time">SYSTEM</div>
+        </div>
+        <p class="system-message">END-TO-END ENCRYPTION ENABLED</p>
+    </div>
+    <div class="input-area">
+        <input type="text" class="input-field" placeholder="MESSAGE DISABLED" disabled>
+        <button class="send-btn" disabled>SEND</button>
+    </div>
+    <script>
+        // Extract scumwhore number from URL
+        const path = window.location.pathname;
+        const match = path.match(/scumwhore-(\d+)/);
+        if (match) {
+            document.getElementById('contact-name').textContent = 'SCUMWHORE ' + match[1];
+            document.title = 'SCUMWHORE ' + match[1] + ' - SCUMWHORES.COM';
+        }
+    </script>
+</body>
+</html>

@@ -13,49 +13,67 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px 20px;
         }
-        h1 {
-            font-size: 48px;
-            letter-spacing: 8px;
-            margin-bottom: 30px;
+        .header {
+            padding: 20px;
             border-bottom: 1px solid #ff0000;
-            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .description {
-            font-size: 16px;
-            letter-spacing: 2px;
-            margin-bottom: 50px;
-            max-width: 500px;
-            line-height: 1.8;
-        }
-        .status {
-            font-size: 12px;
-            letter-spacing: 4px;
-            opacity: 0.6;
-            margin-bottom: 40px;
-        }
-        .back {
+        .header a {
             color: #ff0000;
             text-decoration: none;
             font-size: 12px;
-            letter-spacing: 3px;
-            border: 1px solid #ff0000;
-            padding: 10px 30px;
+            letter-spacing: 2px;
         }
-        .back:hover {
+        .header h1 {
+            font-size: 14px;
+            letter-spacing: 4px;
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .chamber-option {
+            display: block;
+            text-align: center;
+            padding: 60px 80px;
+            border: 1px solid #ff0000;
+            text-decoration: none;
+            color: #ff0000;
+            transition: all 0.2s;
+        }
+        .chamber-option:hover {
             background: #ff0000;
             color: #000;
+        }
+        .chamber-option h2 {
+            font-size: 24px;
+            letter-spacing: 6px;
+            margin-bottom: 15px;
+        }
+        .chamber-option p {
+            font-size: 10px;
+            letter-spacing: 2px;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
-    <h1>CHAMBERS</h1>
-    <p class="description">Enter encrypted messaging with ScumWhores. Private and public chatrooms for verified clients. All communications are end-to-end encrypted and automatically purged.</p>
-    <p class="status">[ SYSTEM OFFLINE ]</p>
-    <a href="/" class="back">RETURN</a>
+    <div class="header">
+        <a href="/">RETURN</a>
+        <h1>CHAMBERS</h1>
+        <span></span>
+    </div>
+    <div class="main">
+        <a href="/chambers/private" class="chamber-option">
+            <h2>PRIVATE CHAMBERS</h2>
+            <p>ENCRYPTED MESSAGING</p>
+        </a>
+    </div>
 </body>
 </html>

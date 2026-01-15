@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHECKOUT - SCUMWHORES.COM</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #000;
+            color: #ff0000;
+            font-family: 'Times New Roman', Times, serif;
+            min-height: 100vh;
+        }
+        .top-bar {
+            padding: 15px 20px;
+            border-bottom: 1px solid #ff0000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-bar a {
+            color: #ff0000;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+        .top-bar h1 {
+            font-size: 14px;
+            letter-spacing: 4px;
+            font-weight: normal;
+        }
+        .main {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .checkout-title {
+            font-size: 28px;
+            letter-spacing: 8px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: normal;
+        }
+        .order-summary {
+            background: #0a0000;
+            border: 1px solid #330000;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .order-summary h3 {
+            font-size: 12px;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            font-weight: normal;
+        }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 12px;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #1a0000;
+        }
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 12px;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #330000;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-label {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            opacity: 0.7;
+        }
+        .form-input {
+            width: 100%;
+            background: #0a0000;
+            border: 1px solid #330000;
+            padding: 15px;
+            color: #ff0000;
+            font-family: inherit;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #ff0000;
+        }
+        .form-input::placeholder {
+            color: #660000;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #330000;
+            cursor: pointer;
+            background: #0a0000;
+        }
+        .payment-option:hover, .payment-option.selected {
+            border-color: #ff0000;
+        }
+        .payment-option input {
+            display: none;
+        }
+        .payment-radio {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #ff0000;
+            border-radius: 50%;
+            margin-right: 15px;
+            position: relative;
+        }
+        .payment-option.selected .payment-radio::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 8px;
+            height: 8px;
+            background: #ff0000;
+            border-radius: 50%;
+        }
+        .payment-label {
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+        .place-order-btn {
+            width: 100%;
+            background: #ff0000;
+            border: none;
+            color: #000;
+            padding: 20px;
+            font-family: inherit;
+            font-size: 14px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .place-order-btn:hover {
+            background: #cc0000;
+        }
+        .place-order-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .notice {
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 1px;
+            opacity: 0.5;
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .empty-cart p {
+            font-size: 14px;
+            letter-spacing: 3px;
+            opacity: 0.5;
+            margin-bottom: 30px;
+        }
+        .empty-cart a {
+            color: #ff0000;
+            text-decoration: none;
+            border: 1px solid #ff0000;
+            padding: 15px 30px;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <a href="/market/cart">BACK TO CART</a>
+        <h1>CHECKOUT</h1>
+        <span></span>
+    </div>
+
+    <div class="main">
+        <h2 class="checkout-title">CHECKOUT</h2>
+
+        <div id="checkoutContent"></div>
+    </div>
+
+    <script>
+        function getCart() {
+            return JSON.parse(localStorage.getItem('scumCart') || '[]');
+        }
+
+        function renderCheckout() {
+            const cart = getCart();
+            const container = document.getElementById('checkoutContent');
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart">
+                        <p>YOUR CART IS EMPTY</p>
+                        <a href="/market">GO TO MARKET</a>
+                    </div>
+                `;
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            container.innerHTML = `
+                <div class="order-summary">
+                    <h3>ORDER SUMMARY</h3>
+                    ${cart.map(item => `
+                        <div class="order-item">
+                            <span>${item.name} × ${item.qty}</span>
+                            <span>$${item.price * item.qty}</span>
+                        </div>
+                    `).join('')}
+                    <div class="order-total">
+                        <span>TOTAL</span>
+                        <span>$${total}</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">CONTACT INFORMATION</div>
+                    <div class="form-group">
+                        <label class="form-label">EMAIL</label>
+                        <input type="email" class="form-input" placeholder="YOUR@EMAIL.COM" id="email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">TELEGRAM (OPTIONAL)</label>
+                        <input type="text" class="form-input" placeholder="@USERNAME" id="telegram">
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">SHIPPING ADDRESS</div>
+                    <div class="form-group">
+                        <label class="form-label">FULL NAME</label>
+                        <input type="text" class="form-input" placeholder="NAME" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">ADDRESS</label>
+                        <input type="text" class="form-input" placeholder="STREET ADDRESS" id="address">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">CITY</label>
+                            <input type="text" class="form-input" placeholder="CITY" id="city">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">ZIP CODE</label>
+                            <input type="text" class="form-input" placeholder="ZIP" id="zip">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">COUNTRY</label>
+                        <input type="text" class="form-input" placeholder="COUNTRY" id="country">
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">PAYMENT METHOD</div>
+                    <div class="payment-options">
+                        <label class="payment-option selected" onclick="selectPayment(this)">
+                            <input type="radio" name="payment" value="crypto" checked>
+                            <div class="payment-radio"></div>
+                            <span class="payment-label">CRYPTO (BTC / ETH / XMR / USDC)</span>
+                        </label>
+                        <label class="payment-option" onclick="selectPayment(this)">
+                            <input type="radio" name="payment" value="scumcash">
+                            <div class="payment-radio"></div>
+                            <span class="payment-label">SCUMCASH BALANCE</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="place-order-btn" onclick="placeOrder()">PLACE ORDER - $${total}</button>
+
+                <p class="notice">ALL SALES ARE FINAL. NO REFUNDS.<br>ORDER CONFIRMATION SENT TO EMAIL.</p>
+            `;
+        }
+
+        function selectPayment(element) {
+            document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+        }
+
+        function placeOrder() {
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+
+            if (!email || !name || !address) {
+                alert('FILL IN ALL REQUIRED FIELDS');
+                return;
+            }
+
+            // Clear cart
+            localStorage.removeItem('scumCart');
+
+            // Show confirmation
+            document.getElementById('checkoutContent').innerHTML = `
+                <div style="text-align: center; padding: 60px 20px;">
+                    <h2 style="font-size: 24px; letter-spacing: 6px; margin-bottom: 30px; font-weight: normal;">ORDER PLACED</h2>
+                    <p style="font-size: 12px; letter-spacing: 2px; opacity: 0.7; line-height: 2;">
+                        ORDER CONFIRMATION SENT TO ${email}<br><br>
+                        PAYMENT INSTRUCTIONS WILL BE PROVIDED VIA EMAIL.<br>
+                        ORDER SHIPS AFTER PAYMENT CONFIRMATION.
+                    </p>
+                    <a href="/market" style="display: inline-block; margin-top: 40px; color: #ff0000; text-decoration: none; border: 1px solid #ff0000; padding: 15px 30px; font-size: 12px; letter-spacing: 2px;">RETURN TO MARKET</a>
+                </div>
+            `;
+        }
+
+        renderCheckout();
+    </script>
+</body>
+</html>

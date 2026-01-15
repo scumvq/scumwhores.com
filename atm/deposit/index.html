@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEPOSIT - SCUMWHORES.COM</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #000;
+            color: #ff0000;
+            font-family: 'Times New Roman', Times, serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .top-bar {
+            padding: 15px 20px;
+            border-bottom: 1px solid #ff0000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+        .top-bar a {
+            color: #ff0000;
+            text-decoration: none;
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        h1 {
+            font-size: 24px;
+            letter-spacing: 8px;
+            margin-bottom: 50px;
+            font-weight: normal;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 350px;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+            border: 1px solid #ff0000;
+            background: transparent;
+            color: #ff0000;
+            text-decoration: none;
+            font-size: 16px;
+            letter-spacing: 4px;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background: #ff0000;
+            color: #000;
+        }
+        .option-sub {
+            font-size: 10px;
+            letter-spacing: 2px;
+            opacity: 0.6;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <a href="/atm">BACK TO ATM</a>
+        <span>BALANCE: 0 SC</span>
+    </div>
+    <div class="main">
+        <h1>SELECT PAYMENT METHOD</h1>
+        <div class="options">
+            <a href="/atm/deposit/crypto" class="option">CRYPTO</a>
+            <a href="/atm/deposit/card" class="option">DEBIT / CREDIT</a>
+        </div>
+    </div>
+</body>
+</html>

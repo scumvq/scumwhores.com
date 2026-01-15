@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRYPTO DEPOSIT - SCUMWHORES.COM</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #000;
+            color: #ff0000;
+            font-family: 'Times New Roman', Times, serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .top-bar {
+            padding: 15px 20px;
+            border-bottom: 1px solid #ff0000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+        .top-bar a {
+            color: #ff0000;
+            text-decoration: none;
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        h1 {
+            font-size: 24px;
+            letter-spacing: 8px;
+            margin-bottom: 40px;
+            font-weight: normal;
+        }
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 40px;
+        }
+        .crypto-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            border: 1px solid #ff0000;
+            background: transparent;
+            color: #ff0000;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .crypto-btn:hover, .crypto-btn.selected {
+            background: #ff0000;
+            color: #000;
+        }
+        .amount-section {
+            width: 100%;
+            max-width: 400px;
+            display: none;
+        }
+        .amount-section.show {
+            display: block;
+        }
+        .amount-label {
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .amount-input {
+            width: 100%;
+            background: #0a0000;
+            border: 1px solid #ff0000;
+            padding: 20px;
+            color: #ff0000;
+            font-family: inherit;
+            font-size: 24px;
+            text-align: center;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+        .amount-input::placeholder {
+            color: #660000;
+        }
+        .conversion {
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 2px;
+            opacity: 0.6;
+            margin-bottom: 30px;
+        }
+        .generate-btn {
+            width: 100%;
+            background: #ff0000;
+            border: none;
+            padding: 20px;
+            color: #000;
+            font-family: inherit;
+            font-size: 14px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .generate-btn:hover {
+            background: #cc0000;
+        }
+        .notice {
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 1px;
+            opacity: 0.5;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <a href="/atm/deposit">BACK</a>
+        <span>BALANCE: 0 SC</span>
+    </div>
+    <div class="main">
+        <h1>SELECT CURRENCY</h1>
+
+        <div class="crypto-grid">
+            <button class="crypto-btn" data-crypto="BTC">BITCOIN</button>
+            <button class="crypto-btn" data-crypto="LN">BTC LIGHTNING</button>
+            <button class="crypto-btn" data-crypto="XMR">MONERO</button>
+            <button class="crypto-btn" data-crypto="USDC">USDC</button>
+            <button class="crypto-btn" data-crypto="ETH">ETHEREUM</button>
+            <button class="crypto-btn" data-crypto="USDT">USDT</button>
+        </div>
+
+        <div class="amount-section" id="amountSection">
+            <div class="amount-label">ENTER AMOUNT (USD)</div>
+            <input type="number" class="amount-input" id="amountInput" placeholder="0.00" min="10" max="10000">
+            <div class="conversion" id="conversion">= 0 SCUMCASH</div>
+            <button class="generate-btn" id="generateBtn">GENERATE PAYMENT ADDRESS</button>
+            <p class="notice">PAYMENT INTEGRATION COMING SOON<br>ALL DEPOSITS ARE FINAL</p>
+        </div>
+    </div>
+
+    <script>
+        const cryptoBtns = document.querySelectorAll('.crypto-btn');
+        const amountSection = document.getElementById('amountSection');
+        const amountInput = document.getElementById('amountInput');
+        const conversion = document.getElementById('conversion');
+        let selectedCrypto = null;
+
+        cryptoBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                cryptoBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedCrypto = btn.dataset.crypto;
+                amountSection.classList.add('show');
+            });
+        });
+
+        amountInput.addEventListener('input', () => {
+            const val = parseFloat(amountInput.value) || 0;
+            conversion.textContent = '= ' + val.toFixed(0) + ' SCUMCASH';
+        });
+
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            alert('PAYMENT INTEGRATION COMING SOON');
+        });
+    </script>
+</body>
+</html>

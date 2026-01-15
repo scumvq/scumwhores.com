@@ -7,31 +7,116 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: #000;
+            background-color: #0a0a0a;
             color: #ff0000;
-            font-family: 'Times New Roman', Times, serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
         }
-        .header {
-            padding: 20px;
-            border-bottom: 1px solid #ff0000;
+        .status-bar {
+            padding: 8px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            background: #000;
-            z-index: 100;
+            font-size: 11px;
+            color: #ff0000;
+            opacity: 0.5;
         }
-        .header a {
+        .status-bar .time {
+            font-weight: 600;
+        }
+        .status-icons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-size: 10px;
+        }
+        .top-header {
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-header a {
             color: #ff0000;
             text-decoration: none;
-            font-size: 12px;
-            letter-spacing: 2px;
+            font-size: 15px;
         }
-        .header h1 {
-            font-size: 14px;
-            letter-spacing: 4px;
+        .header-icons {
+            display: flex;
+            gap: 20px;
+        }
+        .header-icons svg {
+            width: 22px;
+            height: 22px;
+            fill: #ff0000;
+            opacity: 0.8;
+            cursor: pointer;
+        }
+        .title-row {
+            padding: 5px 20px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ff0000;
+        }
+        .search-bar {
+            margin: 0 16px 12px;
+            background: #1a0a0a;
+            border-radius: 10px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-bar svg {
+            width: 16px;
+            height: 16px;
+            fill: #ff0000;
+            opacity: 0.4;
+        }
+        .search-bar input {
+            background: none;
+            border: none;
+            color: #ff0000;
+            font-size: 15px;
+            width: 100%;
+            outline: none;
+        }
+        .search-bar input::placeholder {
+            color: #ff0000;
+            opacity: 0.4;
+        }
+        .archived-section {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            gap: 15px;
+            border-bottom: 1px solid #1a0a0a;
+            cursor: pointer;
+        }
+        .archived-section:hover {
+            background: #1a0a0a;
+        }
+        .archived-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .archived-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: #ff0000;
+            opacity: 0.6;
+        }
+        .archived-text {
+            font-size: 16px;
+            opacity: 0.7;
         }
         .contacts {
             padding: 0;
@@ -39,249 +124,552 @@
         .contact {
             display: flex;
             align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid #1a0000;
+            padding: 12px 20px;
+            border-bottom: 1px solid #120505;
             text-decoration: none;
             color: #ff0000;
-            transition: background 0.2s;
+            transition: background 0.15s;
         }
         .contact:hover {
-            background: #1a0000;
+            background: #1a0808;
+        }
+        .contact:active {
+            background: #200a0a;
+        }
+        .avatar-wrapper {
+            position: relative;
+            margin-right: 15px;
         }
         .avatar {
-            width: 45px;
-            height: 45px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
-            background: #333;
-            margin-right: 15px;
-            flex-shrink: 0;
+            background: linear-gradient(135deg, #2a0a0a 0%, #1a0505 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 500;
+            color: #ff0000;
+            border: 1px solid #2a0a0a;
+            overflow: hidden;
+        }
+        .avatar.has-image {
+            background-size: cover;
+            background-position: center;
+        }
+        .avatar-group {
+            background: linear-gradient(135deg, #3a0a1a 0%, #2a0510 100%);
+        }
+        .avatar-group svg {
+            width: 28px;
+            height: 28px;
+            fill: #ff0000;
+            opacity: 0.8;
+        }
+        .online-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            background: #ff0000;
+            border-radius: 50%;
+            border: 2px solid #0a0a0a;
         }
         .contact-info {
             flex: 1;
+            min-width: 0;
+        }
+        .contact-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
         }
         .contact-name {
-            font-size: 14px;
-            letter-spacing: 2px;
-            margin-bottom: 4px;
+            font-size: 17px;
+            font-weight: 500;
+            color: #ff0000;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            padding-right: 10px;
         }
-        .contact-status {
-            font-size: 10px;
-            letter-spacing: 1px;
+        .contact-time {
+            font-size: 13px;
+            color: #ff0000;
             opacity: 0.5;
+            flex-shrink: 0;
         }
-        .contact-arrow {
-            font-size: 18px;
+        .contact-time.unread {
+            color: #ff0000;
+            opacity: 1;
+        }
+        .contact-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .contact-preview {
+            font-size: 15px;
+            color: #ff0000;
+            opacity: 0.45;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            padding-right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .contact-preview .read-receipt {
+            display: inline-flex;
+            flex-shrink: 0;
+        }
+        .contact-preview .read-receipt svg {
+            width: 18px;
+            height: 18px;
+            fill: #ff0000;
+            opacity: 0.4;
+        }
+        .contact-preview .read-receipt.read svg {
+            fill: #ff3333;
+            opacity: 0.7;
+        }
+        .contact-preview .missed-call {
+            color: #ff3333;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .contact-preview .missed-call svg {
+            width: 14px;
+            height: 14px;
+            fill: #ff3333;
+        }
+        .contact-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .muted-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: #ff0000;
             opacity: 0.3;
+        }
+        .unread-badge {
+            background: #ff0000;
+            color: #000;
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 22px;
+            height: 22px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+        }
+        .pin-icon svg {
+            width: 14px;
+            height: 14px;
+            fill: #ff0000;
+            opacity: 0.3;
+        }
+        .encryption-footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #1a0a0a;
+            margin-top: 20px;
+        }
+        .encryption-footer p {
+            font-size: 11px;
+            opacity: 0.3;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .encryption-footer svg {
+            width: 12px;
+            height: 12px;
+            fill: #ff0000;
+        }
+        .fab {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 56px;
+            height: 56px;
+            background: #ff0000;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .fab:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(255, 0, 0, 0.4);
+        }
+        .fab svg {
+            width: 26px;
+            height: 26px;
+            fill: #000;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <a href="/chambers">BACK</a>
-        <h1>PRIVATE CHAMBERS</h1>
-        <span></span>
+    <div class="status-bar">
+        <span class="time" id="time">00:00</span>
+        <div class="status-icons">
+            <span>VPN</span>
+            <span>TOR</span>
+            <span>E2E</span>
+        </div>
     </div>
+
+    <div class="top-header">
+        <a href="/chambers">Back</a>
+        <div class="header-icons">
+            <svg viewBox="0 0 24 24"><path d="M12 20.5c4.97 0 9-3.14 9-7s-4.03-7-9-7-9 3.14-9 7c0 1.97 1.03 3.77 2.72 5.1L4 21.5l3.78-1.58C9.14 20.28 10.53 20.5 12 20.5z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+        </div>
+    </div>
+
+    <div class="title-row">
+        <h1 class="title">Chats</h1>
+    </div>
+
+    <div class="search-bar">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" placeholder="Search">
+    </div>
+
+    <div class="archived-section">
+        <div class="archived-icon">
+            <svg viewBox="0 0 24 24"><path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z"/></svg>
+        </div>
+        <span class="archived-text">Archived</span>
+    </div>
+
     <div class="contacts">
         <a href="/chambers/private/scumwhore-1" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 1</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S1</div>
+                <div class="online-dot"></div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+1 (347) ***-**82</span>
+                    <span class="contact-time unread">NOW</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        <span class="read-receipt"><svg viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z"/></svg></span>
+                        waiting for transfer...
+                    </span>
+                    <div class="contact-meta">
+                        <span class="unread-badge">16</span>
+                    </div>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-2" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 2</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S2</div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+1 (570) 453-****</span>
+                    <span class="contact-time">Yesterday</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        <span class="missed-call">
+                            <svg viewBox="0 0 24 24"><path d="M19.23 15.26l-2.54-.29c-.61-.07-1.21.14-1.64.57l-1.84 1.84c-2.83-1.44-5.15-3.75-6.59-6.59l1.85-1.85c.43-.43.64-1.03.57-1.64l-.29-2.52c-.12-1.01-.97-1.78-1.99-1.78H5.03c-1.13 0-2.07.94-2 2.07.53 8.54 7.36 15.36 15.89 15.89 1.13.07 2.07-.87 2.07-2v-1.73c.01-1.01-.76-1.86-1.76-1.97z"/></svg>
+                            Missed voice call
+                        </span>
+                    </span>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-3" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 3</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S3</div>
+                <div class="online-dot"></div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+86 133 2836 ****</span>
+                    <span class="contact-time unread">Monday</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        We haven't spoken in a while...
+                    </span>
+                    <div class="contact-meta">
+                        <span class="unread-badge">1</span>
+                    </div>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-4" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 4</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar avatar-group">
+                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                </div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">MERCHANTS GROUP</span>
+                    <span class="contact-time">8/20</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        ~Harrison: Payment confirmed.
+                    </span>
+                    <div class="contact-meta">
+                        <span class="muted-icon"><svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg></span>
+                    </div>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-5" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 5</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S5</div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+86 159 1474 ****</span>
+                    <span class="contact-time">8/17</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        <span class="read-receipt"><svg viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z"/></svg></span>
+                        https://dhgate.com/produc...
+                    </span>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-6" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 6</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S6</div>
+                <div class="online-dot"></div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+86 150 6019 ****</span>
+                    <span class="contact-time unread">8/15</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        Hello, dear. Our inventory...
+                    </span>
+                    <div class="contact-meta">
+                        <span class="unread-badge">1</span>
+                    </div>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-7" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 7</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S7</div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+1 (213) 555-****</span>
+                    <span class="contact-time">8/12</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        <span class="read-receipt read"><svg viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z"/></svg></span>
+                        order shipped, tracking...
+                    </span>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-8" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 8</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S8</div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+44 7*** ***890</span>
+                    <span class="contact-time">8/10</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        thanks for last night
+                    </span>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-9" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 9</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S9</div>
+                <div class="online-dot"></div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+1 (305) 7**-****</span>
+                    <span class="contact-time unread">8/8</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        voice message (0:42)
+                    </span>
+                    <div class="contact-meta">
+                        <span class="unread-badge">1</span>
+                    </div>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-10" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 10</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar avatar-group">
+                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                </div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">VAULT ACCESS</span>
+                    <span class="contact-time">8/5</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        ~System: New content uploaded
+                    </span>
+                    <div class="contact-meta">
+                        <span class="muted-icon"><svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg></span>
+                    </div>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-11" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 11</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S11</div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+7 (9**) ***-**45</span>
+                    <span class="contact-time">8/2</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        payment received - 0.15 BTC
+                    </span>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-12" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 12</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S12</div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+234 *** *** 8821</span>
+                    <span class="contact-time">7/28</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        locked content available
+                    </span>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-13" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 13</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S13</div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+63 9** *** ****</span>
+                    <span class="contact-time">7/25</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        come see me
+                    </span>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-14" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 14</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S14</div>
             </div>
-            <div class="contact-arrow">&gt;</div>
+            <div class="contact-info">
+                <div class="contact-top">
+                    <span class="contact-name">+55 ** *****-****</span>
+                    <span class="contact-time">7/20</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        sent a video
+                    </span>
+                </div>
+            </div>
         </a>
+
         <a href="/chambers/private/scumwhore-15" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 15</div>
-                <div class="contact-status">AVAILABLE</div>
+            <div class="avatar-wrapper">
+                <div class="avatar">S15</div>
             </div>
-            <div class="contact-arrow">&gt;</div>
-        </a>
-        <a href="/chambers/private/scumwhore-16" class="contact">
-            <div class="avatar"></div>
             <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 16</div>
-                <div class="contact-status">AVAILABLE</div>
+                <div class="contact-top">
+                    <span class="contact-name">+91 ***** *****</span>
+                    <span class="contact-time">7/15</span>
+                </div>
+                <div class="contact-bottom">
+                    <span class="contact-preview">
+                        transaction complete
+                    </span>
+                </div>
             </div>
-            <div class="contact-arrow">&gt;</div>
-        </a>
-        <a href="/chambers/private/scumwhore-17" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 17</div>
-                <div class="contact-status">AVAILABLE</div>
-            </div>
-            <div class="contact-arrow">&gt;</div>
-        </a>
-        <a href="/chambers/private/scumwhore-18" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 18</div>
-                <div class="contact-status">AVAILABLE</div>
-            </div>
-            <div class="contact-arrow">&gt;</div>
-        </a>
-        <a href="/chambers/private/scumwhore-19" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 19</div>
-                <div class="contact-status">AVAILABLE</div>
-            </div>
-            <div class="contact-arrow">&gt;</div>
-        </a>
-        <a href="/chambers/private/scumwhore-20" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 20</div>
-                <div class="contact-status">AVAILABLE</div>
-            </div>
-            <div class="contact-arrow">&gt;</div>
-        </a>
-        <a href="/chambers/private/scumwhore-21" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 21</div>
-                <div class="contact-status">AVAILABLE</div>
-            </div>
-            <div class="contact-arrow">&gt;</div>
-        </a>
-        <a href="/chambers/private/scumwhore-22" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 22</div>
-                <div class="contact-status">AVAILABLE</div>
-            </div>
-            <div class="contact-arrow">&gt;</div>
-        </a>
-        <a href="/chambers/private/scumwhore-23" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 23</div>
-                <div class="contact-status">AVAILABLE</div>
-            </div>
-            <div class="contact-arrow">&gt;</div>
-        </a>
-        <a href="/chambers/private/scumwhore-24" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 24</div>
-                <div class="contact-status">AVAILABLE</div>
-            </div>
-            <div class="contact-arrow">&gt;</div>
-        </a>
-        <a href="/chambers/private/scumwhore-25" class="contact">
-            <div class="avatar"></div>
-            <div class="contact-info">
-                <div class="contact-name">SCUMWHORE 25</div>
-                <div class="contact-status">AVAILABLE</div>
-            </div>
-            <div class="contact-arrow">&gt;</div>
         </a>
     </div>
+
+    <div class="encryption-footer">
+        <p>
+            <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            END-TO-END ENCRYPTED
+        </p>
+    </div>
+
+    <div class="fab">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const mins = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time').textContent = hours + ':' + mins;
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
 </body>
 </html>

@@ -7,135 +7,374 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: #000;
+            background-color: #0a0a0a;
             color: #ff0000;
-            font-family: 'Times New Roman', Times, serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
-        .header {
-            padding: 15px 20px;
-            border-bottom: 1px solid #ff0000;
+        .status-bar {
+            padding: 8px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #000;
+            font-size: 11px;
+            color: #ff0000;
+            opacity: 0.5;
         }
-        .header a {
+        .status-bar .time {
+            font-weight: 600;
+        }
+        .status-icons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-size: 10px;
+        }
+        .header {
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #1a0a0a;
+            background: #0a0a0a;
+        }
+        .header-back {
             color: #ff0000;
             text-decoration: none;
-            font-size: 12px;
-            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 15px;
         }
-        .header-center {
-            text-align: center;
+        .header-back svg {
+            width: 22px;
+            height: 22px;
+            fill: #ff0000;
         }
-        .header h1 {
+        .header-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2a0a0a 0%, #1a0505 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 14px;
-            letter-spacing: 3px;
+            font-weight: 500;
+            border: 1px solid #2a0a0a;
+        }
+        .header-info {
+            flex: 1;
+        }
+        .header-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
         }
         .header-status {
-            font-size: 9px;
-            letter-spacing: 1px;
+            font-size: 12px;
             opacity: 0.5;
-            margin-top: 3px;
+        }
+        .header-status.online {
+            opacity: 1;
+            color: #ff3333;
+        }
+        .header-actions {
+            display: flex;
+            gap: 18px;
+        }
+        .header-actions svg {
+            width: 22px;
+            height: 22px;
+            fill: #ff0000;
+            opacity: 0.8;
+            cursor: pointer;
         }
         .chat-area {
             flex: 1;
-            padding: 30px 20px;
+            padding: 15px;
+            overflow-y: auto;
+            background:
+                linear-gradient(rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.95)),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 20px,
+                    rgba(255, 0, 0, 0.02) 20px,
+                    rgba(255, 0, 0, 0.02) 21px
+                );
+        }
+        .date-divider {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .date-divider span {
+            background: #1a0a0a;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            opacity: 0.6;
+        }
+        .message {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            margin-bottom: 4px;
+        }
+        .message.received {
+            justify-content: flex-start;
+        }
+        .message.sent {
+            justify-content: flex-end;
         }
         .message-bubble {
-            background: #1a0000;
-            padding: 15px 20px;
-            border-radius: 15px;
-            max-width: 280px;
-            margin-bottom: 20px;
+            max-width: 75%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            position: relative;
         }
-        .message-bubble p {
-            font-size: 13px;
-            letter-spacing: 1px;
-            line-height: 1.6;
+        .message.received .message-bubble {
+            background: #1a0808;
+            border-top-left-radius: 4px;
+        }
+        .message.sent .message-bubble {
+            background: #330808;
+            border-top-right-radius: 4px;
+        }
+        .message-text {
+            font-size: 15px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+        .message-meta {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+            margin-top: 4px;
         }
         .message-time {
-            font-size: 9px;
-            opacity: 0.4;
-            margin-top: 8px;
-            text-align: right;
+            font-size: 11px;
+            opacity: 0.5;
+        }
+        .message-status svg {
+            width: 16px;
+            height: 16px;
+            fill: #ff0000;
+            opacity: 0.5;
+        }
+        .message-status.read svg {
+            opacity: 0.8;
+        }
+        .encryption-notice {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+        .encryption-notice .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1a0808;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        .encryption-notice svg {
+            width: 14px;
+            height: 14px;
+            fill: #ff0000;
         }
         .system-message {
-            font-size: 11px;
-            letter-spacing: 2px;
-            opacity: 0.5;
             text-align: center;
+            margin: 20px 0;
+        }
+        .system-message span {
+            background: #200a0a;
+            border: 1px solid #330a0a;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            display: inline-block;
+            max-width: 85%;
         }
         .input-area {
-            padding: 15px 20px;
-            border-top: 1px solid #1a0000;
+            padding: 10px 15px;
             display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            background: #0a0a0a;
+            border-top: 1px solid #1a0a0a;
+        }
+        .input-extras {
+            display: flex;
+            gap: 8px;
+        }
+        .input-extras svg {
+            width: 24px;
+            height: 24px;
+            fill: #ff0000;
+            opacity: 0.6;
+            cursor: pointer;
+        }
+        .input-wrapper {
+            flex: 1;
+            background: #1a0808;
+            border-radius: 22px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
             gap: 10px;
         }
         .input-field {
             flex: 1;
-            background: #0a0000;
-            border: 1px solid #330000;
-            padding: 12px 15px;
+            background: none;
+            border: none;
             color: #ff0000;
+            font-size: 15px;
+            outline: none;
             font-family: inherit;
-            font-size: 12px;
-            letter-spacing: 1px;
         }
         .input-field::placeholder {
-            color: #660000;
+            color: #ff0000;
+            opacity: 0.4;
         }
         .input-field:disabled {
             opacity: 0.5;
-            cursor: not-allowed;
         }
         .send-btn {
+            width: 44px;
+            height: 44px;
             background: #ff0000;
-            color: #000;
             border: none;
-            padding: 12px 20px;
-            font-family: inherit;
-            font-size: 11px;
-            letter-spacing: 2px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.15s, background 0.15s;
+        }
+        .send-btn:hover {
+            background: #cc0000;
+            transform: scale(1.05);
+        }
+        .send-btn:disabled {
+            opacity: 0.4;
             cursor: not-allowed;
-            opacity: 0.5;
+            transform: none;
+        }
+        .send-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: #000;
+        }
+        .voice-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: #000;
         }
     </style>
 </head>
 <body>
+    <div class="status-bar">
+        <span class="time" id="time">00:00</span>
+        <div class="status-icons">
+            <span>VPN</span>
+            <span>TOR</span>
+            <span>E2E</span>
+        </div>
+    </div>
+
     <div class="header">
-        <a href="/chambers/private">BACK</a>
-        <div class="header-center">
-            <h1 id="contact-name">SCUMWHORE</h1>
-            <div class="header-status">ENCRYPTED</div>
+        <a href="/chambers/private" class="header-back">
+            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </a>
+        <div class="header-avatar" id="avatar">S1</div>
+        <div class="header-info">
+            <div class="header-name" id="contact-name">+1 (347) ***-**82</div>
+            <div class="header-status" id="contact-status">last seen today at 14:32</div>
         </div>
-        <span></span>
+        <div class="header-actions">
+            <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+        </div>
     </div>
+
     <div class="chat-area">
-        <div class="message-bubble">
-            <p>MESSAGING SYSTEM CURRENTLY OFFLINE. AWAIT FURTHER INSTRUCTIONS.</p>
-            <div class="message-time">SYSTEM</div>
+        <div class="encryption-notice">
+            <div class="badge">
+                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                Messages are end-to-end encrypted. No one outside of this chat can read them.
+            </div>
         </div>
-        <p class="system-message">END-TO-END ENCRYPTION ENABLED</p>
+
+        <div class="date-divider">
+            <span>TODAY</span>
+        </div>
+
+        <div class="system-message">
+            <span>MESSAGING SYSTEM CURRENTLY OFFLINE. AWAIT FURTHER INSTRUCTIONS.</span>
+        </div>
     </div>
+
     <div class="input-area">
-        <input type="text" class="input-field" placeholder="MESSAGE DISABLED" disabled>
-        <button class="send-btn" disabled>SEND</button>
+        <div class="input-extras">
+            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>
+        </div>
+        <div class="input-wrapper">
+            <input type="text" class="input-field" placeholder="Message" disabled>
+            <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: #ff0000; opacity: 0.4;"><path d="M9.4 10.5l4.77-8.26C13.47 2.09 12.75 2 12 2c-2.4 0-4.6.85-6.32 2.25l3.66 6.35.06-.1zM21.54 9c-.92-2.92-3.15-5.26-6-6.34L11.88 9h9.66zm.26 1h-7.49l.29.5 4.76 8.25C21 16.97 22 14.61 22 12c0-.69-.07-1.35-.2-2zM8.54 12l-3.9-6.75C3.01 7.03 2 9.39 2 12c0 .69.07 1.35.2 2h7.49l-1.15-2zm-6.08 3c.92 2.92 3.15 5.26 6 6.34L12.12 15H2.46zm11.27 0l-3.9 6.76c.7.15 1.42.24 2.17.24 2.4 0 4.6-.85 6.32-2.25l-3.66-6.35-.93 1.6z"/></svg>
+        </div>
+        <button class="send-btn" disabled>
+            <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+        </button>
     </div>
+
     <script>
-        // Extract scumwhore number from URL
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const mins = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time').textContent = hours + ':' + mins;
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Extract contact info from URL
         const path = window.location.pathname;
         const match = path.match(/scumwhore-(\d+)/);
         if (match) {
-            document.getElementById('contact-name').textContent = 'SCUMWHORE ' + match[1];
-            document.title = 'SCUMWHORE ' + match[1] + ' - SCUMWHORES.COM';
+            const num = match[1];
+            document.getElementById('avatar').textContent = 'S' + num;
+            document.title = 'SCUMWHORE ' + num + ' - SCUMWHORES.COM';
+
+            // Generate fake phone number based on scumwhore number
+            const phones = [
+                '+1 (347) ***-**82',
+                '+1 (570) 453-****',
+                '+86 133 2836 ****',
+                'MERCHANTS GROUP',
+                '+86 159 1474 ****',
+                '+86 150 6019 ****',
+                '+1 (213) 555-****',
+                '+44 7*** ***890',
+                '+1 (305) 7**-****',
+                'VAULT ACCESS',
+                '+7 (9**) ***-**45',
+                '+234 *** *** 8821',
+                '+63 9** *** ****',
+                '+55 ** *****-****',
+                '+91 ***** *****'
+            ];
+            const idx = parseInt(num) - 1;
+            if (idx < phones.length) {
+                document.getElementById('contact-name').textContent = phones[idx];
+            } else {
+                document.getElementById('contact-name').textContent = '+** *** ***-****';
+            }
         }
     </script>
 </body>

@@ -7,16 +7,33 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: #000;
+            background-color: #0a0a0a;
             color: #ff0000;
-            font-family: 'Times New Roman', Times, serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
+        .status-bar {
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #ff0000;
+            opacity: 0.6;
+            border-bottom: 1px solid #1a0a0a;
+        }
+        .status-bar .time {
+            font-weight: 600;
+        }
+        .status-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
         .header {
-            padding: 20px;
-            border-bottom: 1px solid #ff0000;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -24,56 +41,180 @@
         .header a {
             color: #ff0000;
             text-decoration: none;
-            font-size: 12px;
-            letter-spacing: 2px;
+            font-size: 15px;
         }
-        .header h1 {
+        .header-title {
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .encryption-banner {
+            background: linear-gradient(90deg, #1a0000 0%, #0a0a0a 50%, #1a0000 100%);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #ff0000;
+            opacity: 0.8;
+        }
+        .lock-icon {
             font-size: 14px;
-            letter-spacing: 4px;
         }
         .main {
             flex: 1;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
             padding: 40px 20px;
         }
-        .chamber-option {
-            display: block;
-            text-align: center;
-            padding: 60px 80px;
-            border: 1px solid #ff0000;
-            text-decoration: none;
-            color: #ff0000;
-            transition: all 0.2s;
+        .app-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #330000 0%, #1a0000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.2);
         }
-        .chamber-option:hover {
+        .app-icon svg {
+            width: 50px;
+            height: 50px;
+            fill: #ff0000;
+        }
+        .app-name {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+        .app-subtitle {
+            font-size: 13px;
+            opacity: 0.5;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+        .entry-btn {
             background: #ff0000;
             color: #000;
-        }
-        .chamber-option h2 {
-            font-size: 24px;
-            letter-spacing: 6px;
-            margin-bottom: 15px;
-        }
-        .chamber-option p {
-            font-size: 10px;
+            border: none;
+            padding: 16px 60px;
+            font-size: 14px;
+            font-weight: 600;
             letter-spacing: 2px;
-            opacity: 0.7;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            transition: all 0.2s;
+        }
+        .entry-btn:hover {
+            background: #cc0000;
+            transform: scale(1.02);
+        }
+        .entry-btn:active {
+            transform: scale(0.98);
+        }
+        .security-info {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .security-info p {
+            font-size: 11px;
+            opacity: 0.4;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .protocol-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #1a0000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            margin-top: 10px;
+        }
+        .protocol-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #ff0000;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .footer-warning {
+            padding: 20px;
+            text-align: center;
+            font-size: 10px;
+            opacity: 0.3;
+            letter-spacing: 1px;
+            border-top: 1px solid #1a0a0a;
         }
     </style>
 </head>
 <body>
+    <div class="status-bar">
+        <span class="time" id="time">00:00</span>
+        <div class="status-icons">
+            <span>VPN</span>
+            <span>|</span>
+            <span>TOR</span>
+        </div>
+    </div>
+
     <div class="header">
-        <a href="/">RETURN</a>
-        <h1>CHAMBERS</h1>
-        <span></span>
+        <a href="/">EXIT</a>
+        <span class="header-title">CHAMBERS</span>
+        <span style="width: 30px;"></span>
     </div>
+
+    <div class="encryption-banner">
+        <span class="lock-icon">&#128274;</span>
+        <span>END-TO-END ENCRYPTED</span>
+    </div>
+
     <div class="main">
-        <a href="/chambers/private" class="chamber-option">
-            <h2>PRIVATE CHAMBERS</h2>
-            <p>ENCRYPTED MESSAGING</p>
-        </a>
+        <div class="app-icon">
+            <svg viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+            </svg>
+        </div>
+        <h1 class="app-name">CHAMBERS</h1>
+        <p class="app-subtitle">ENCRYPTED LEDGER</p>
+
+        <a href="/chambers/private" class="entry-btn">ENTER</a>
+
+        <div class="security-info">
+            <p>ALL MESSAGES ARE ENCRYPTED</p>
+            <p>NO LOGS STORED ON SERVER</p>
+            <div class="protocol-badge">SIGNAL PROTOCOL ACTIVE</div>
+        </div>
     </div>
+
+    <div class="footer-warning">
+        UNAUTHORIZED ACCESS IS MONITORED
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const mins = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time').textContent = hours + ':' + mins;
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
 </body>
 </html>
